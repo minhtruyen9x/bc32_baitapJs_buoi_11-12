@@ -1,6 +1,7 @@
+// Cập nhật giao diện lần đầu tiên khi mới vào trang web
 updateUI();
 
-
+// ============ Các hàm phụ trợ xử lý form =============
 // Lấy dữ liệu nhập từ form
 function getFormData() {
     let account = dom("#TaiKhoan").value.trim()
@@ -31,11 +32,12 @@ function resetForm() {
     resetErrorMess()
 }
 
-//hàm close form-modal
+//hàm close form-modal thủ công
 function closeForm() {
     dom(".close[data-dismiss='modal']").click()
 }
 
+// Hàm render ra các dữ liệu lên màn hình
 function render(users) {
     let htmls = users.reduce((result, user, index) => {
         return result + `
@@ -70,7 +72,7 @@ function render(users) {
     dom("#tblDanhSachNguoiDung").innerHTML = htmls;
 }
 
-
+// Hàm cập nhật giao diện mỗi khi có sự thay đổi dữ liệu
 function updateUI(searchTerm) {
     getUser(searchTerm)
         .then(users => {
@@ -80,6 +82,8 @@ function updateUI(searchTerm) {
             sendErrorMess("ERROR:Can not update UI")
         })
 }
+
+// =========== Phần xử lý các chức năng chính ===========
 // xử lý khi nhấn nút mở modal thêm người dùng
 dom("#btnThemNguoiDung").addEventListener("click", () => {
     resetForm()
@@ -176,6 +180,8 @@ dom("body").addEventListener("click", event => {
                 dom("#MoTa").value = user.description
             })
             .catch(err => {
+                dom("#TaiKhoan").disabled = false
+                closeForm()
                 sendErrorMess("server not found")
             })
     }
